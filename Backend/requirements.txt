@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+torch
+transformers
+huggingface-hub
+numpy
+Pillow
+git+https://github.com/openai/CLIP.git
+python-dotenv
+supabase
+requests
+python-multipart

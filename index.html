@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Project Matcher</title>
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .bounce {
+            animation: bounce 0.5s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Hero Section */
+        .hero-home {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+        }
+
+        .hero-home h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-home p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        /* Upload Section */
+        .upload-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .file-upload {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            border: none;
+        }
+
+        .file-upload:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .url-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .url-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-btn {
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .upload-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Preview Section */
+        .preview-box {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-box h3 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.3rem;
+        }
+
+        .preview-img {
+            max-width: 300px;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Loader */
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card figure {
+            margin: 0;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .card-body p {
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .similarity {
+            font-weight: 600;
+            color: #667eea !important;
+            font-size: 1.1rem;
+        }
+
+        /* About Content */
+        .about-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-home h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .upload-box {
+                padding: 1.5rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="nav-inner">
+                <ul class="nav-links">
+                    <li><a id="len1" class="hoverable" href="#" onclick="showHome()">Home</a></li>
+                    <li><a id="len2" class="hoverable" href="#" onclick="showAbout()">About</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Home Section -->
+        <div id="home-section">
+            <header class="hero-home">
+                <h1><span class="gradient-text">Visual Project</span> Matcher</h1>
+                <p>Find similar projects by uploading an image or pasting a URL</p>
+            </header>
+
+            <section class="upload-box">
+                <label class="file-upload">
+                    <input type="file" id="file-input" accept="image/*">
+                    <span>📂 Select an Image</span>
+                </label>
+
+                <input type="text" id="url-input" placeholder="Or paste an image URL" class="url-input" />
+
+                <button id="upload-btn" class="upload-btn">Search</button>
+            </section>
+
+            <div id="preview-box" class="preview-box" style="display: none;">
+                <h3>Selected Image</h3>
+                <img id="preview-img" class="preview-img" alt="Uploaded preview" />
+            </div>
+
+            <div id="loader" class="loader" style="display: none;"></div>
+
+            <div id="card-grid" class="card-grid"></div>
+        </div>
+
+        <!-- About Section -->
+        <div id="about-section" style="display: none;">
+            <header class="hero-home">
+                <h1><span class="gradient-text">About</span> Visual Project Matcher</h1>
+                <p>Learn more about our image matching technology</p>
+            </header>
+            <div class="about-content">
+                <p>Visual Project Matcher uses advanced image recognition to find similar projects based on visual similarity. Upload an image or provide a URL to get started!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State variables
+        let selectedFile = null;
+        let imageUrl = '';
+        let products = [];
+        let loading = false;
+
+        // DOM elements
+        const fileInput = document.getElementById('file-input');
+        const urlInput = document.getElementById('url-input');
+        const uploadBtn = document.getElementById('upload-btn');
+        const previewBox = document.getElementById('preview-box');
+        const previewImg = document.getElementById('preview-img');
+        const loader = document.getElementById('loader');
+        const cardGrid = document.getElementById('card-grid');
+        const homeSection = document.getElementById('home-section');
+        const aboutSection = document.getElementById('about-section');
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNavAnimation();
+            setupEventListeners();
+        });
+
+        function initializeNavAnimation() {
+            let i = 1;
+            const stop = 2;
+            const interval = setInterval(() => {
+                if (i > stop) i = 1;
+                const el = document.getElementById(`len${i}`);
+                if (el) {
+                    el.classList.add('bounce');
+                    setTimeout(() => el.classList.remove('bounce'), 1000);
+                }
+                i++;
+            }, 1500);
+            window.navInterval = interval;
+        }
+
+        function setupEventListeners() {
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    selectedFile = file;
+                    imageUrl = '';
+                    urlInput.value = '';
+                    const reader = new FileReader();
+                    reader.onload = function(e) { showPreview(e.target.result); };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            urlInput.addEventListener('input', function(e) {
+                imageUrl = e.target.value;
+                selectedFile = null;
+                fileInput.value = '';
+                if (imageUrl) showPreview(imageUrl);
+                else hidePreview();
+            });
+
+            uploadBtn.addEventListener('click', handleUpload);
+        }
+
+        function showPreview(src) {
+            previewImg.src = src;
+            previewBox.style.display = 'block';
+        }
+
+        function hidePreview() {
+            previewBox.style.display = 'none';
+            previewImg.src = '';
+        }
+
+        async function handleUpload() {
+            if (!selectedFile && !imageUrl) {
+                alert('Please select an image or enter an image URL');
+                return;
+            }
+
+            setLoading(true);
+
+            let formData = new FormData();
+            if (selectedFile) formData.append('file', selectedFile);
+            else if (imageUrl) formData.append('image_url', imageUrl);
+
+            try {
+                const response = await fetch('https://visualproductfinder-production.up.railway.app/search/image', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const data = await response.json();
+                products = data.results || [];
+                displayResults();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while searching. Please try again.');
+                products = [];
+                displayResults();
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function setLoading(isLoading) {
+            loading = isLoading;
+            if (isLoading) {
+                uploadBtn.textContent = 'Searching...';
+                uploadBtn.disabled = true;
+                loader.style.display = 'block';
+            } else {
+                uploadBtn.textContent = 'Search';
+                uploadBtn.disabled = false;
+                loader.style.display = 'none';
+            }
+        }
+
+        function displayResults() {
+            cardGrid.innerHTML = '';
+            products.forEach((product) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <figure>
+                        <img src="${product.image_url}" alt="${product.name}" />
+                    </figure>
+                    <div class="card-body">
+                        <h2 class="card-title">${product.name}</h2>
+                        <p>${product.category}</p>
+                        <p class="similarity">
+                            Similarity: ${(product.similarity * 100).toFixed(2)}%
+                        </p>
+                    </div>
+                `;
+                cardGrid.appendChild(card);
+            });
+        }
+
+        function showHome() {
+            homeSection.style.display = 'block';
+            aboutSection.style.display = 'none';
+        }
+
+        function showAbout() {
+            homeSection.style.display = 'none';
+            aboutSection.style.display = 'block';
+            cardGrid.innerHTML = '';
+        }
+
+        function cleanup() {
+            if (window.navInterval) clearInterval(window.navInterval);
+        }
+
+        window.addEventListener('beforeunload', cleanup);
+    </script>
+</body>
+</html>

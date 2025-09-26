@@ -1,1 +1,194 @@
-# VIsual_deltax-main
+# Visual DeltaX
+
+A **Visual Product Matcher** web application that allows users to upload an image or paste an image URL to find similar projects/products.  
+This project combines a modern frontend, a scalable backend, and machine learning for similarity search.
+
+🔗 **Live Demo (Frontend)**: [Visual DeltaX on Vercel](https://v-isual-deltax-git-main-priyesh-yadavs-projects.vercel.app/)  
+🔗 **Backend API**: [Search API on Railway](https://visualproductfinder-production.up.railway.app/search/image)  
+🔗 **GitHub Repository**: [Visual DeltaX Repo](https://github.com/Priyeshyadav390/VIsual_deltax)
+
+---
+
+## 🚀 Features
+- Upload an image **or** paste an image URL.
+- Preview the selected image before searching.
+- Finds similar projects/products based on **visual embeddings**.
+- Modern responsive UI.
+- Deployed with scalable cloud infrastructure.
+
+---
+
+## 🛠️ Tech Stack
+- **Frontend:** HTML, CSS, React (deployed on **Vercel**)  
+- **Backend:** FastAPI (Python) deployed on **Railway**  
+- **Database:** Supabase (PostgreSQL + storage)  
+- **Model:** OpenAI’s **CLIP ViT-B/32** for vector embeddings  
+- **APIs:** REST-based image search API  
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/Priyeshyadav390/VIsual_deltax.git
+cd VIsual_deltax
+2. Frontend (React + Vercel)
+bash
+Copy code
+cd frontend
+npm install
+npm run dev   # local development
+3. Backend (FastAPI + Railway)
+bash
+Copy code
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+4. Environment Variables
+Set the following variables in .env files:
+
+ini
+Copy code
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_key
+🔗 API Endpoint
+POST /search/image
+Accepts either:
+
+file: uploaded image
+
+image_url: direct image link
+
+Returns:
+
+json
+Copy code
+{
+  "results": [
+    {
+      "name": "Project A",
+      "category": "Tech",
+      "image_url": "https://...",
+      "similarity": 0.87
+    }
+  ]
+}
+📦 Deployment
+Frontend: Vercel
+
+Backend: Railway
+
+Database: Supabase
+
+Model Hosting: Inside FastAPI backend
+
+👨‍💻 Author
+Priyesh Yadav
+
+🌐 Portfolio/Projects: GitHub
+
+yaml
+Copy code
+
+---
+
+### 📌 Documentation.md
+
+```markdown
+# 📖 Project Documentation – Visual DeltaX
+
+## 1. Project Overview
+Visual DeltaX is a **Visual Search Application** that allows users to find similar projects/products based on an image.  
+Users can either upload an image or paste an image URL, and the system retrieves visually similar items by computing **vector embeddings** using the **CLIP ViT-B/32 model**.
+
+---
+
+## 2. System Architecture
+Frontend (Vercel - React/HTML)
+↓ (API Request)
+Backend (Railway - FastAPI)
+↓
+Vector Embeddings (CLIP ViT-B/32)
+↓
+Database (Supabase - vector storage)
+↓
+Results → Similar Projects
+
+yaml
+Copy code
+
+---
+
+## 3. Key Components
+- **Frontend (Vercel):**  
+  - Built with HTML, CSS, React.  
+  - Handles user interactions (upload/URL input, preview, results grid).  
+
+- **Backend (FastAPI on Railway):**  
+  - Accepts image uploads or URLs.  
+  - Extracts embeddings using **ViT-B/32 (CLIP)** model.  
+  - Queries Supabase database for nearest vectors.  
+  - Returns similarity results as JSON.  
+
+- **Database (Supabase):**  
+  - Stores project metadata and vector embeddings.  
+  - Provides efficient vector search.  
+
+- **Model (ViT-B/32):**  
+  - Converts images into embeddings.  
+  - Embeddings compared via cosine similarity.  
+
+---
+
+## 4. Features
+- Image Upload + URL Input.  
+- Preview of selected image.  
+- Real-time similarity search.  
+- Scalable backend API.  
+- Responsive UI.  
+
+---
+
+## 5. API Documentation
+### Endpoint: `/search/image`
+**Method:** POST  
+
+#### Request:
+- `file`: image file (optional)  
+- `image_url`: image link (optional)  
+
+#### Response:
+```json
+{
+  "results": [
+    {
+      "name": "Example Project",
+      "category": "Design",
+      "image_url": "https://...",
+      "similarity": 92.14
+    }
+  ]
+}
+6. Deployment Details
+Frontend: Vercel
+
+Backend: Railway
+
+Database: Supabase
+
+Model: CLIP ViT-B/32 inside FastAPI backend
+
+7. Future Improvements
+Add support for text-to-image search.
+
+User authentication (Supabase Auth).
+
+Advanced filtering and sorting in results.
+
+Model upgrade to ViT-L/14 for higher accuracy.
+
+8. Author
+Developed by Priyesh Yadav
+🔗 GitHub Repository
+🔗 Live Demo
